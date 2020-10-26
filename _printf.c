@@ -1,79 +1,69 @@
 #include "holberton.h"
-#include <stdlib.h>
 #include <stdarg.h>
+#include <stdlib.h>
+
 /**
- * _printf - Print with the format indicated in the main string,
- * a series of arguments given by the user.
+ * get_format - Get the function to print.
+ * @format: String with the indicated formated.
+ * Return: Pointer to print function
+ * or NULL if the inicated foramat is not valid.
+ */
+static int (*get_format(const char *format))(va_list)
+{
+	unsigned int i;
+	print_format arr_print[] = {
+		{"c", print_c},
+		{"s", print_s},
+		{"%", print_por},
+		{NULL, NULL}
+	};
+
+	for (i = 0; arr_print[i].str_format != NULL; i++)
+	{
+		if (*(arr_print[i].str_format) == *format)
+			break;
+	}
+	return (arr_print[i].fun_print);
+}
+
+/**
+ * _printf - Print a arguement with the format indicated.
  * @format: Main string with the format.
  * Return: Numbers of print carhaters.
  */
 int _printf(const char *format, ...)
 {
-	int imprimir, i, n_print, end, j, k, n_space;
-	unsigned int size, count, cons_num;
-	/*char* c_fsum = NULL, c_justify = NULL, c_fhash = NULL, c_zero = NULL;}*/
-	int *c_fsum, *c_justify, *c_fhash, *c_zero;
-	char *c_format = NULL, *c_long = NULL, *str_num = NULL;
+	unsigned int i, n_print = 0;
+	int (*f_print)(va_list);
+	va_list arg_list;
 
-        /* list: lista de todas las funciones posibles*/
-        print_str list[] = {
-                {"c", print_c},
-                {"s", print_s},
-                {"%", print_por},
-                {NULL, NULL}
-        };
+	if (format == NULL)
+		return (-1);
 
-        /*arg_list: contiene todos los argumentos pasados al programa*/
-        va_list arg_list;
+	va_start(arg_list, format);
 
+	for (i = 0; format[i] != '\0' ; i++)
+	{
+		/*Print and count until find a '%'*/
+		for (; format[i] != '%' && format[i] != '\0'; i++)
+		{
+			_putchar(format[i]);
+			n_print++;
+		}
+		if (format[i] == '\0')
+			return (n_print);
+		/*If the character is a alone '%' -> Find a function format*/
+		if (format[i + 1] == '\0')
+			return (-1);
 
-        if (format == NULL)
-                return (-1);
+		f_print = get_format(&format[i + 1]);
 
-        va_start(arg_list, format);
-
-        for (i = 0; format[i] != NULL ; i++)
-        {
-                if (format[i] != '%')
-                {
-                        _putchar(format[i]);
-                        n_print++;
-                }
-                else
-                {       /*verificar el tamaño aqui  ------------*/
-                        c_fsum = c_justify = c_zero = c_hash = 0;
-
-                        str_num = malloc((size - j + 1) *sizeof(char));
-
-                        b_end = 1;
-                        b_check = 0;
-                        count =  cons_num = 0;
-
-                        for (j = i + 1; b_end != 0 && str_num != NULL; j++)
-                        {
-                                identify_num(format[j], &str_num, count,
-                                             cons_num);
-                                b_check = identify_char(format[j], &c_fsum, &c_justify,
-                                              &c_fhash);
-                                identity_long(format[j], &c_long );
-
-                                char *c_format = calloc(2, sizeof(char));
-                                b_check = identify_format(format[j], &c_format);
-
-                                if (count == 1 && str_num[count - 1] == 0)
-                                        c_zero = j;
-
-                                /*Verificar si hay repetidos por ejemplo ++5%d*/
-                        }
-                        n_space = check_num(&str_num, &c_zero);
-                        format_check();
-                        free(str_num);
-                        free(c_format);
-                    }
-        }
-        /* SE LLAMA A CHECH FUNTION */
-        imprimir = check_funtion(format, list, arg_list);
-        va_end(arg_list);
-        /* debe de retornar**/
-        return (imprimir);
+		if (f_print != NULL) /*If the function was found*/
+		{
+			n_print += f_print(arg_list);
+			i += 1;
+		}
+	}
+	va_end(arg_list);
+	return (n_print);
 }
