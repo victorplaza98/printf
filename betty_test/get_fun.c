@@ -1,7 +1,10 @@
 #include "holberton.h"
+<<<<<<< HEAD
 #include <stdio.h>
 #include <stdarg.h>
 #include <stdlib.h>
+=======
+>>>>>>> d84c868f0b9b703b71d472c963bbb42696bb855b
 
 /**
  * get_format - Get the function to print.
