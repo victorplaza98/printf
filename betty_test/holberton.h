@@ -23,5 +23,6 @@ int _putchar(char c);
 int _printf(const char *format, ...);
 int print_c(va_list list);
 int print_s(va_list list);
+int print_por(__attribute__((unused))va_list list);
 
 #endif

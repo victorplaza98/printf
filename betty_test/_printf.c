@@ -1,6 +1,7 @@
 #include "holberton.h"
 #include <stdarg.h>
 #include <stdlib.h>
+
 /**
  * get_format - Get the function to print.
  * @format: String with the indicated formated.
@@ -13,6 +14,7 @@ static int (*get_format(const char *format))(va_list)
 	print_format arr_print[] = {
 		{"c", print_c},
 		{"s", print_s},
+		{"%", print_por},
 		{NULL, NULL}
 	};
 
@@ -31,9 +33,8 @@ static int (*get_format(const char *format))(va_list)
  */
 int _printf(const char *format, ...)
 {
-	unsigned int n_print, i;
+	unsigned int i, n_print = 0;
 	int (*f_print)(va_list);
-
 	va_list arg_list;
 
 	if (format == NULL)
@@ -43,20 +44,14 @@ int _printf(const char *format, ...)
 
 	for (i = 0; format[i] != '\0' ; i++)
 	{
-		for (; format[i] != '%'; i++)/*Print and count until find a '%'*/
+		/*Print and count until find a '%'*/
+		for (; format[i] != '%' && format[i] != '\0'; i++)
 		{
 			_putchar(format[i]);
 			n_print++;
-			if (format[i] == '\0')
-				return (n_print);
 		}
-		if (format[i + 1] == '%')/*If there are two '%'*/
-		{
-			_putchar(format[i + i]);
-			i += 2;
-			continue;
-		}
-
+		if (format[i] == '\0')
+			return (n_print);
 		/*If the character is a alone '%' -> Find a function format*/
 		if (format[i + 1] == '\0')
 			return (-1);
@@ -66,7 +61,7 @@ int _printf(const char *format, ...)
 		if (f_print != NULL) /*If the function was found*/
 		{
 			n_print += f_print(arg_list);
-			i += 2;
+			i += 1;
 		}
 	}
 	va_end(arg_list);
@@ -75,6 +70,14 @@ int _printf(const char *format, ...)
 
 int main(void)
 {
-	_printf("Hola\n");
+	int orig, cpy;
+	char *nombre = NULL;
+
+	nombre = "Victor";
+	orig = printf("%cHola %s!%%c\n", '!', nombre);
+	cpy = _printf("%cHola %s!%%c\n", '!', nombre);
+
+	printf("Len orginal: %d\n", orig);
+	printf("Len copy: %d\n", cpy);
 	return (0);
 }
