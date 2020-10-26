@@ -4,21 +4,25 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <stdlib.h>
+
 /**
- * struct structure_format - Define a structure with a string format
+ * struct print_format - Define a structure with a string format
  * and function for print it.
  * @str_format: String of format.
- * @f_print: Function for print.
+ * @fun_print: Function for print.
  */
-typedef struct structure_format
+typedef struct print_format
 {
 	char *str_format;
-	int (*f_print)(list);
-} structure_format;
+	int (*fun_print)(va_list);
+} print_format;
 
-
+/*Helper fuctions*/
 int _putchar(char c);
+
 int _printf(const char *format, ...);
-int check_funtion(const char *format, print_str list[], va_list arg_list);
+int print_c(va_list list);
+int print_s(va_list list);
+int print_por(__attribute__((unused))va_list list);
 
 #endif
