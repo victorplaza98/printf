@@ -1,3 +1,5 @@
+#include "holberton.h"
+
 /**
  * get_format - Get the function to print.
  * @format: String with the indicated formated.
@@ -7,7 +9,7 @@
 static int (*get_format(const char *format))(va_list)
 {
 	unsigned int i;
-	struct_format arr_print[] = {
+	print_format arr_print[] = {
 		{"c", print_c},
 		{"s", print_s},
 		{"i", print_i},
