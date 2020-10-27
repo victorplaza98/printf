@@ -1,4 +1,5 @@
 #include "holberton.h"
+#include <limits.h>
 
 /**
  * _puts_mod - description
@@ -71,29 +72,30 @@ int _atoi(char *s)
  */
 int print_number(int n)
 {
-	unsigned int num = 0, ni = 0;
-	int i;
+	unsigned int num = 0;
+	int i, ni = 0;
 
-	if (n % 10 < 0)
+	if (n > 2147483647 || n < -2147483648)
+	  return (-1);
+
+	if (n < 0)
 	{
 		_putchar('-');
 		num = -n;
 		ni = 1;
 	}
 	else
-	{
 		num = n;
-	}
 	if (num < 10)
 	{
 		_putchar('0' + (num % 10));
-		i = 1 + ni;
+		i = 1;
 	}
 	else
 	{
 		i = print_number(num / 10);
 		_putchar('0' + num % 10);
-		i++;
+		i += ni + 1;
 	}
 	return (i);
 }
