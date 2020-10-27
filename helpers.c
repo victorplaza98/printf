@@ -69,13 +69,15 @@ int _atoi(char *s)
  * @n: number to print
  *
  */
-void print_number(int n)
+int print_number(int n)
 {
 	unsigned int num = 0;
+	int i = 0;
 
 	if (n % 10 < 0)
 	{
 		_putchar('-');
+		i++;
 		num = -n;
 	}
 	else
@@ -83,10 +85,15 @@ void print_number(int n)
 		num = n;
 	}
 	if (num < 10)
+	{
 		_putchar('0' + (num % 10));
+		i++;
+	}
 	else
 	{
 		print_number(num / 10);
 		_putchar('0' + num % 10);
+		i++;
 	}
+	return (i);
 }
