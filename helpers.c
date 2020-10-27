@@ -74,9 +74,6 @@ int print_number(int n)
 	unsigned int num = 0;
 	int i, ni = 0;
 
-	if (n < -2147483648 || n > 2147483647)
-		return (-1);
-
 	if (n < 0)
 	{
 		_putchar('-');
