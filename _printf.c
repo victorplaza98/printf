@@ -17,6 +17,8 @@ static int (*get_format(const char *format))(va_list)
 		{"%", print_por},
 		{"d", print_int},
 		{"i", print_dec},
+		{"r", print_r},
+		{"R", print_R},
 		{NULL, NULL}
 	};
 
