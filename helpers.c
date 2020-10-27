@@ -67,18 +67,18 @@ int _atoi(char *s)
 /**
  * print_number - print integer
  * @n: number to print
- *
+ * Return: Number of printted characters
  */
 int print_number(int n)
 {
-	unsigned int num = 0;
-	int i = 0;
+	unsigned int num = 0, ni = 0;
+	int i;
 
 	if (n % 10 < 0)
 	{
 		_putchar('-');
-		i++;
 		num = -n;
+		ni = 1;
 	}
 	else
 	{
@@ -87,11 +87,11 @@ int print_number(int n)
 	if (num < 10)
 	{
 		_putchar('0' + (num % 10));
-		i++;
+		i = 1 + ni;
 	}
 	else
 	{
-		print_number(num / 10);
+		i = print_number(num / 10);
 		_putchar('0' + num % 10);
 		i++;
 	}
