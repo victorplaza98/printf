@@ -87,7 +87,10 @@ int print_number(int n)
 	if (num < 10)
 	{
 		_putchar('0' + (num % 10));
-		i = 1;
+		if (ni != 0)
+			i = 1 + ni;
+		else
+			i = 1;
 	}
 	else
 	{
