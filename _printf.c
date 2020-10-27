@@ -1,6 +1,7 @@
 #include "holberton.h"
 #include <stdarg.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 /**
  * get_format - Get the function to print.
@@ -14,7 +15,7 @@ static int (*get_format(const char *format))(va_list)
 	print_format arr_print[] = {
 		{"c", print_c},
 		{"s", print_s},
-		{"%", print_por},
+		{"37", print_por},
 		{NULL, NULL}
 	};
 
@@ -26,6 +27,45 @@ static int (*get_format(const char *format))(va_list)
 	return (arr_print[i].fun_print);
 }
 
+
+/**
+ * idt_format - Identify each character of the format string.
+ * @format: String with the format
+ * @n_print: Number of printed characters.
+ * @i: Runner of the format string.
+ * Return: Number of printed characters.
+ */
+int idt_format(const char *format, unsigned int n_print, unsigned int *i)
+{
+	unsigned int k, r;
+	r = *i;
+	printf("Runner = %d", r);
+
+	/*Print and count until find a '%'*/
+	for (; format[r] != '%' && format[r] != '\0'; r++)
+	{
+		_putchar(format[r]);
+		n_print++;
+	}
+	if (format[r] == '\0')
+		return (n_print);
+
+	/*If the character is a alone '%' -> Find a function format*/
+	if (format[r + 1] == '\0')
+		return (-1);
+	printf("El caracter actual es: %c\n", format[r + 1] == '\0');
+	/*if (format[(*i) + 1] >= 7 || format[(*i) + 1] <= 13)
+	{
+		_putchar('%');
+		_putchar(format[(*i) + 1]);
+		n_print++;
+		(*i)++;
+		return (n_print);
+		}*/
+
+	return (n_print);
+}
+
 /**
  * _printf - Print a arguement with the format indicated.
  * @format: Main string with the format.
@@ -33,7 +73,8 @@ static int (*get_format(const char *format))(va_list)
  */
 int _printf(const char *format, ...)
 {
-	unsigned int i, n_print = 0;
+	unsigned int i = 0, n_print = 0;
+	unsigned int *run = &i;
 	int (*f_print)(va_list);
 	va_list arg_list;
 
@@ -42,18 +83,10 @@ int _printf(const char *format, ...)
 
 	va_start(arg_list, format);
 
-	for (i = 0; format[i] != '\0' ; i++)
+	for (; format[i] != '\0' ; i++)
 	{
-		/*Print and count until find a '%'*/
-		for (; format[i] != '%' && format[i] != '\0'; i++)
-		{
-			_putchar(format[i]);
-			n_print++;
-		}
-		if (format[i] == '\0')
-			return (n_print);
-		/*If the character is a alone '%' -> Find a function format*/
-		if (format[i + 1] == '\0')
+		n_print = idt_format(format, n_print, run);
+		if (n_print < 0)
 			return (-1);
 
 		f_print = get_format(&format[i + 1]);
