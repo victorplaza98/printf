@@ -41,7 +41,7 @@ int print_r(va_list list)
 
 /**
  * rot13 - Encode and print a string using rot13.
- * @cod: string to change.
+ * @s: string to change.
  * Return: Encode string.
  */
 int rot13(char *s)
